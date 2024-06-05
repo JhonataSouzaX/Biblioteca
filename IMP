@@ -1,0 +1,95 @@
+usuarioEsenha = {}
+livros = {}
+
+def gerenciar_usuario(usuarioEsenha):
+    usuario = input("Digite o nome de usuário: ")
+    nome_capitalizado = usuario.capitalize()
+    senha = input("Digite sua senha: ")
+
+    try:
+        with open("usuarios.txt", "a") as arquivo:
+            arquivo.write(f"{nome_capitalizado}:{senha}\n")
+    except Exception as e:
+        print("Erro ao salvar usuário:", e)
+    else:
+        print("Usuário", nome_capitalizado, "registrado com sucesso!")
+
+def login(usuarioEsenha):
+    usuario = input("Digite o nome de usuário: ")
+    nome_capitalizado = usuario.capitalize()
+    senha = input("Digite sua senha: ")
+
+    if nome_capitalizado in usuarioEsenha and usuarioEsenha[nome_capitalizado] == senha:
+        print("Login feito com sucesso!")
+    else:
+        print("Nome de usuário ou senha incorreta!")
+
+def cadastrar_livro():
+    titulo = input("Digite o título do livro: ")
+    autor = input("Digite o nome do autor: ")
+    ano = input("Digite o ano de publicação: ")
+    livros[titulo] = {'autor': autor, 'ano_publicacao': ano}
+    print("Livro registrado com sucesso!")
+    
+    try:
+        with open("livros.txt", "a") as arquivo:
+            arquivo.write(f"{titulo} : {autor} : {ano}\n")
+    except Exception as e:
+        print("Erro ao salvar usuário:", e)
+    else:
+        print("livro", "titulo", "registrado com sucesso!")
+
+def mostrar_usuarios():
+    print("Usuários registrados:")
+    try:
+        with open("usuarios.txt", "r") as arquivo:
+            for linha in arquivo:
+                usuario, senha = linha.strip().split(":")
+                print(f"Usuário: {usuario}, Senha: {senha}")
+                usuarioEsenha[usuario] = senha
+    except Exception as e:
+        print("erro: ", {e})
+    pass
+    
+def mostrar_livros():
+    print("Livros cadastrados:")
+    for titulo, detalhes in livros.items():
+        print(f"Título do livro: {titulo}, Autor: {detalhes['autor']}, Ano: {detalhes['ano_publicacao']}")
+    try:
+        with open("Livros.txt", "a") as arquivo:
+            arquivo.write(f"{titulo}:{detalhes}:{detalhes}\n")
+    except Exception as e:
+            print("Erro ao registrar livro:", e)
+    else:
+        print("livro", "titulo", "registrado com sucesso!")
+        
+def main():
+    while True:
+        print("\n*** Menu ***")
+        print("1. Cadastrar usuário")
+        print("2. Login")
+        print("3. Cadastrar livro")
+        print("4. Mostrar usuários cadastrados")
+        print("5. Mostrar livros cadastrados")
+        print("6. Sair")
+
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            gerenciar_usuario(usuarioEsenha)
+        elif opcao == "2":
+            login(usuarioEsenha)
+        elif opcao == "3":
+            cadastrar_livro()
+        elif opcao == "4":
+            mostrar_usuarios()
+        elif opcao == "5":
+           mostrar_livros()
+        elif opcao == "6":
+            print("Saindo...")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+
+if __name__ == "__main__":
+    main()
